@@ -9,3 +9,4 @@ my_website_c.visit()
 my_website_c.visit()
 
 print(my_website_c.__private_counter) # throws error
+print(my_website_c._view_counter__private_counter) # prints
