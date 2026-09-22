@@ -69,7 +69,7 @@ def decomp_check(n):
 
 if __name__ == '__main__':
     n = 0
-    
+
     while n != 'e':
         n = int(input('Number:'))
         print(f'Prime: {is_prime(n)}')
