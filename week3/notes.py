@@ -19,6 +19,10 @@ class Blah:
         if not isinstance(dur, float):
             raise Exception("Invalid Param")
 
+def greet(name:str)->str:
+    greeting = 'Hello, ' + name
+    return greeting
+
 if __name__ == "__main__":
     e1 = Employee()
     e1.setName("George")
