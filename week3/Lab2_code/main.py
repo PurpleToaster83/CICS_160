@@ -3,11 +3,15 @@ import Vehicle
 
 def main():
     pygame.init()
-    canvas = pygame.display.set_mode((1240, 820))
-    car1 = Vehicle.Vehicle("./Images/green_car.png")
+    canvas      = pygame.display.set_mode((1240, 820))
+    car1        = Vehicle.Vehicle("./Images/green_car.png")
+    tree        = Vehicle.Vehicle("./Images/tree.png")
     keepRunning = True
     while (keepRunning):
         canvas.blit(car1.getImage(),car1.getPosition())
+        canvas.blit(tree.getImage(),tree.getPosition())
+        print(car1.IsCollidingWith(tree))
+
         pygame.display.flip()
         pressedKeys =  pygame.key.get_pressed()
         if pressedKeys[pygame.K_d]:
