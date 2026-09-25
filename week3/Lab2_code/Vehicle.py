@@ -12,8 +12,14 @@ class Vehicle(pygame.sprite.Sprite):
     def getImage(self):
         return(self.image)
 
+    def IsCollidingWith(self, otherObject):
+        return [otherObject.getX(), otherObject.getY()], [self.getX(), self.getY()]
+
     def getPosition(self):
         return((self.x, self.y))
+
+    def getWidth(self):
+        return(self.width)
 
     def setPosition(self, x, y):
         self.x = x
