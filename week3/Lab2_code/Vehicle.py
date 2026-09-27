@@ -1,7 +1,7 @@
 import pygame
 
 class Vehicle(pygame.sprite.Sprite):
-    def __init__(self, image, color=(0,0,0), width=100, height=75, locx=0, locy=0):
+    def __init__(self, image, color=(0,0,0), width=186, height=76, locx=0, locy=0):
         self.image            = pygame.image.load(image)
         self.width            = width
         self.height           = height
@@ -13,7 +13,9 @@ class Vehicle(pygame.sprite.Sprite):
         return(self.image)
 
     def IsCollidingWith(self, otherObject):
-        return [otherObject.getX(), otherObject.getY()], [self.getX(), self.getY()]
+        other_position = otherObject.getX()
+        if self.x + 186 >= other_position and self.x <= other_position + 186:
+            return True
 
     def getPosition(self):
         return((self.x, self.y))
