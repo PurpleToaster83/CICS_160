@@ -8,15 +8,17 @@ def main():
     tree        = Vehicle.Vehicle("./Images/tree.png")
     tree.setPosition(1054, 0)
     keepRunning = True
+    carCollided = False
     while (keepRunning):
         canvas.blit(car1.getImage(),car1.getPosition())
         canvas.blit(tree.getImage(),tree.getPosition())
 
         pygame.display.flip()
         pressedKeys =  pygame.key.get_pressed()
-        if(car1.IsCollidingWith(tree)):
+        if car1.IsCollidingWith(tree) and not carCollided:
                     print("The car and the tree have collided!!!")
-        elif pressedKeys[pygame.K_d]:
+                    carCollided = True
+        elif pressedKeys[pygame.K_d] and not carCollided:
             car1.setPosition(car1.getX() + 1, car1.getY())
         for event in pygame.event.get():
             if (event.type == pygame.QUIT):
