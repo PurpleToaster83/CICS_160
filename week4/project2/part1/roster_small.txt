@@ -1,0 +1,15 @@
+#Pets currently at the shelter, in index order
+pet,Angel,reptile
+pet,Bella,dog
+pet,Cheddar,cat
+pet,Dumpling,cat
+pet,Echo,bird
+pet,Fig,dog
+
+#Adopters in talks with the shelter, in index order
+adopter,Alice,yes,0,6
+adopter,Bob,no,2,9
+adopter,Charles,yes,1,4
+adopter,Dana,no,0,11
+adopter,Elena,yes,3,3
+adopter,Farid,no,1,7

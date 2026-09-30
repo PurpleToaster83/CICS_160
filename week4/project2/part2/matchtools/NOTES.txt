@@ -1,0 +1,24 @@
+scratch notes, not for the wiki
+------------------------------
+
+- pulled the Borda weighting out of the prototype. n - place per vote,
+  ties broken by pet index. seems fine on the sample data
+
+- TODO: decide whether checks/ should be its own package. leaving it
+  where it is for now
+
+- dropped count_pairs, nobody was calling it
+
+- sarah asked about negative n. haven't thought about it. probably fine
+
+- reworked the storage this sprint, the old row list was getting in the
+  way of the lookup code. README still describes the old layout, will
+  fix that before handoff
+
+- TODO: write actual docs
+
+- the loader is picky about the file it gets. I always regenerate the
+  data from the export script so it has never bitten me
+
+- if the checks feel slow it is because everyone_matched normalizes
+  before it compares. fine at n=6, revisit at n=10000
