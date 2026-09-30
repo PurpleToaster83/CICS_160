@@ -42,9 +42,46 @@ def report(matching, table):
                 pet adopter i received within adopter i's own preference
                 list. 0 means adopter i received their favorite pet.
     """
-    #TODO
-    pass
+    # create the dictionary template to be returned
+    rep = {
+        'all_favorites': True,
+        'covers_everyone': True,
+        'favorites_possible': True,
+        'most_popular_pet': None,
+        'ranks': [],
+        'within_top_3': True
+    }
 
+    favorites = []
+
+    for adopter, pet in matching:
+
+        # check if all adopters are matched with their favorite pets
+        if not(table.rank_of(adopter, pet) == 1):
+            rep['all_favorites'] = False
+
+        # check if everyone is in the table
+        if table.size() != len(matching):
+            rep['covers_everyone'] = False
+
+        # check if every adopter is matched with a top 3 pet
+        if not(table.rank_of(adopter, pet) <= 3):
+            rep['within_top_3'] = False
+
+        # set the most populat pet - direct table method
+        rep['most_popular_pet'] = table.popularity_order()[0]
+
+        # put all of the ranks of the match pairs in - 0 is best
+        rep['ranks'].append(table.rank_of(adopter, pet) - 1)
+
+        # add adopters favorite pet to list of favorites
+        favorites.append(table.ranking(adopter)[0])
+
+    # check for duplicates in favorites
+    if(len(favorites) != len(set(favorites))):
+        rep['favorites_possible'] = False
+
+    return rep
 
 if __name__ == "__main__":
     prefs = matchtools.PrefTable.load(PREFERENCES_FILE)
