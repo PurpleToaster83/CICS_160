@@ -5,7 +5,7 @@ something about `matchtools` is unclear. Six or more entries is typical.
 Entries can be short. Copy the block below as many times as needed.
 
 Name: William Van Uitert
-Total time spent on Part 2: 50 minutes
+Total time spent on Part 2: 80 minutes
 Did the code end up working (yes / partly / no): yes
 
 ---
