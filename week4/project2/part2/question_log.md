@@ -70,17 +70,17 @@ I learned what a Borda-Style Count was
 ---
 
 ## Question 5
-How do you know how many pets are in the table?
+What does popularity_order() actually return?
 **What I needed to know:**
-If there is a method for the class that I can call for this or need to do it manually
+What is the shape of the return for this function?
 **Where I looked first, and what it told me:**
-I looked at the documentation: PreTable has a size() method that returns the number of adopters and also told me that the table is a list of lists
+I looked at the documentation, which said that it returns total pet rankings in order from least to greatest
 **What I guessed:**
-That you could determine the number of animals by checking the size of table[0]
+This was not correct because the verified correct output had 2 as the favorite pet but the element at position 0 was not 2.
 **How I tested the guess:**
-I ran print(len(table[0]))
+I indexed the return of popularit_order() at position zero
 **What happened:**
-It printed a number which was size of the adopters preferences (i.e. the number of pets in the database)
+The element at the zeroeth index was 2, thus the ordering was favorite to leaat favorite
 ---
 
 ## Question 6
