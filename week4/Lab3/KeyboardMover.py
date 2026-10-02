@@ -7,7 +7,7 @@ class KeyboardMover():
 
     def processOneEvent(self):
         pressedKeys = pygame.key.get_pressed()
-        if pressedKeys[pygame.K_d]:
+        if pressedKeys[ord(self.move_key)]:
             self.vehicle.setPosition(self.vehicle.getX() + 1, self.vehicle.getY())
         for event in pygame.event.get():
             if (event.type == pygame.QUIT):

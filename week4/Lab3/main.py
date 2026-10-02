@@ -8,7 +8,7 @@ import KeyboardMover
 def main():
     canvas = pygame.display.set_mode((1240, 820))
     car1 = Vehicle.Vehicle("./Images/orange_truck.png")
-    kbReader = KeyboardMover.KeyboardMover(car1, "d")
+    kbReader = KeyboardMover.KeyboardMover(car1, "l")
     keepRunning = True
     while (keepRunning):
         canvas.blit(car1.getImage(),car1.getPosition())
