@@ -6,7 +6,7 @@
 ---
 
 ### `__init__()`
-Initializes with an empty list of adopters called `adopters`
+Initializes an empty list of adopters called `adopters`
 
 ---
 
