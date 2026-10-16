@@ -17,3 +17,6 @@ class my_sprite:
 
     def get_height(self):
         return self.height
+
+if __name__ == "__main__":
+    sprite = my_sprite()
