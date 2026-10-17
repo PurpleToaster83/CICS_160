@@ -4,8 +4,10 @@ import pygame
 
 class my_sprite:
     def __init__(self, image_fname:str, loc:tuple[int, int]=(0,0)):
-        self.sprite = pygame.image.load(image_fname) #TODO: currently not how this should be
+        self.image_fname = image_fname
         self.x, self.y = loc
+
+        self.sprite = pygame.image.load(self.image_fname)
         self.height = pygame.Surface.get_height(self.sprite)
         self.width = pygame.Surface.get_width(self.sprite)
 
@@ -17,6 +19,3 @@ class my_sprite:
 
     def get_height(self):
         return self.height
-
-if __name__ == "__main__":
-    sprite = my_sprite()

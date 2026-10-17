@@ -1,4 +1,7 @@
-import java.util.Scanner; 
+package week6.lab4;
+
+import java.util.Scanner;
+
 public class activity_3 {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
