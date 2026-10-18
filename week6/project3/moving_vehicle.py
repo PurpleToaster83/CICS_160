@@ -6,4 +6,5 @@ class moving_vehicle(colliding_object):
 
     def set_location(self, loc:tuple[int, int]):
         self.loc = loc
-        self.bounding_box.top_left = loc
+        self.bounding_box.left = loc[0]
+        self.bounding_box.top = loc[1]

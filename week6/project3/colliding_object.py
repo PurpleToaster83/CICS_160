@@ -13,4 +13,14 @@ class colliding_object(my_sprite):
         return self.bounding_box
 
     def is_colliding_with(self, co):
-        return  self.bounding_box.colliderect(co.get_bounding_box())
+        return self.bounding_box.colliderect(co.get_bounding_box())
+
+    def rotate_to(self, new_heading):
+        self.heading = new_heading
+        old_center = self.bounding_box.center
+        self.sprite = pygame.transform.rotate(self.original_sprite, new_heading)
+        self.bounding_box = self.sprite.get_rect(center=old_center)
+
+    def scale(self, scale_factor):
+        self.bounding_box.scale_by(scale_factor)
+        super().scale(scale_factor)
