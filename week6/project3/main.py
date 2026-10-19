@@ -6,7 +6,7 @@ from moving_vehicle import moving_vehicle
 from colliding_object import colliding_object
 from my_sprite import my_sprite
 
-def display_control(surface, switch):
+def display_toggle(surface, switch):
 
     # draw a rectangle in upper left corner
     display = pygame.Rect(surface.get_width() - 205, 0, 200, 100)
@@ -108,6 +108,11 @@ def handle_collisions(screen, images):
         images[17].switch_can_move()
         images[18].switch_can_move()
 
+def display_controls(surface):
+    controls = my_sprite("images/added/arrows.png", (surface.get_width() - 250, surface.get_height() - 200))
+    controls.scale(0.1)
+    surface.blit(controls.get_image(), controls.get_loc())
+
 def main():
     pygame.init()
     screen_width = 1280
@@ -158,11 +163,12 @@ def main():
 
         screen.fill((0, 0, 0))
 
+        display_toggle(screen, control_yellow)
+        display_controls(screen)
+
         for img in images:
             screen.blit(img.get_image(), img.get_loc())
 
-        # show control relevant info
-        display_control(screen, control_yellow)
         handle_collisions(screen, images)
 
         #TODO: make sure follows SOLID Princples
