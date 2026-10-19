@@ -27,8 +27,18 @@ class my_sprite:
     def get_height(self):
         return self.height
 
+    def get_loc(self):
+        return self.loc
+
     def scale(self, scale_factor):
-        ratio  = (self.height / self.original_height) * scale_factor
-        self.original_sprite = pygame.transform.scale(self.original_sprite, (ratio * self.width, ratio * self.height))
+        self.original_sprite = pygame.transform.scale(self.original_sprite, (scale_factor * self.width, scale_factor * self.height))
+        self.sprite = self.original_sprite
         self.height = pygame.Surface.get_height(self.sprite)
         self.width = pygame.Surface.get_width(self.sprite)
+
+    def rotate_to(self, new_heading):
+        self.heading = new_heading
+        self.sprite = pygame.transform.rotate(self.original_sprite, new_heading)
+
+    def set_location(self, loc:tuple[int, int]):
+        self.loc = loc
