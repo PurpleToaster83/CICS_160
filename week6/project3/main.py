@@ -15,6 +15,7 @@ def prep_images(screen, sprites, col_obj, vehicles, scale_factor):
     screen_width = screen.get_width()
     screen_height = screen.get_height()
 
+    # scale and rotate images
     col_obj[0].scale(scale_factor / 2)
     col_obj[0].rotate_to(90)
     col_obj[1].scale(scale_factor / 2)
@@ -34,6 +35,8 @@ def prep_images(screen, sprites, col_obj, vehicles, scale_factor):
     road_start = screen_height - sprites[0].get_height() - 10
     correction = 50 * scale_factor
 
+    # calculate locations based on image specific info
+    # requires images to be initialized before-hand and then moved
     locs = [
         (screen_width / 8, road_start),
         ((screen_width / 8) + sprites[0].get_width(), road_start),
@@ -58,10 +61,12 @@ def prep_images(screen, sprites, col_obj, vehicles, scale_factor):
         (0, road_start + 0.5 * sprites[0].get_height() + correction)
     ]
 
+    # set all the proper locations
     for i, img in enumerate(sprites + col_obj + vehicles):
         img.set_location(locs[i])
 
 def main():
+    # initialize pygame stuff
     pygame.init()
     screen_width = 1280
     screen_height = 720
@@ -72,6 +77,7 @@ def main():
     control_yellow = True
     scale_factor = 0.3
 
+    # create sprites, colliding_objects, and vehicles at (0,0)
     road_pieces = [
         my_sprite("images/road/road_straight.png"),
         my_sprite("images/road/road_intersection.png"),
@@ -105,24 +111,28 @@ def main():
         moving_vehicle("images/vehicles/yellow_convertible.png", controller=controllers[1])
     ]
 
+    # create rules and move images to correct locations
     rules = game_rules(screen, vehicles)
     prep_images(screen, road_pieces, col_obj, vehicles, scale_factor)
 
     while running:
+        # check if quite or spacebar car toggle is pressed
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 control_yellow = not(control_yellow)
 
+        # control car based on toggle
         vehicles[control_yellow].move_vehicle(5 + (3 * control_yellow))
 
+        # reset screen
         screen.fill((0, 0, 0))
 
+        # draw all the images 
         rules.display_toggle(control_yellow)
         rules.display_controls()
         rules.handle_collisions(col_obj)
-
         for img in (road_pieces + col_obj + vehicles):
             screen.blit(img.get_image(), img.get_loc())
 

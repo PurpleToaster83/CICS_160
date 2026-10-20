@@ -35,6 +35,3 @@ class colliding_object(my_sprite):
         self.sprite = pygame.image.load(image_path)
         self.scale(scale_factor)
         self.set_location(loc)
-
-    def on_collision(self, vehicle, rules):
-        return

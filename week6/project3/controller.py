@@ -4,13 +4,14 @@ import pygame
 
 class controller:
     def arrow_pressed(self):
+        # return a dict of the if arrow keys are pressed
         arrows = {
             "up": False,
             "down": False,
             "left": False,
             "right": False
         }
-        
+
         pressedKeys = pygame.key.get_pressed()
 
         if pressedKeys[pygame.K_UP]:

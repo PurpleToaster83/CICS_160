@@ -6,6 +6,7 @@ class pedestrian(colliding_object):
         super().__init__(image_fname, loc)
 
     def on_collision(self, vehicle, rules):
+        # change the image and store that it has been hit
         if not(self.hit):
             self.hit = True
             self.change_image("images/added/blood.png")

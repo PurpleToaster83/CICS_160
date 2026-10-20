@@ -12,6 +12,7 @@ class game_rules:
         self.finished = False
 
     def start(self):
+        # display go and track that race started
         if not(self.finished):
             self.started = True
             show = pygame.font.SysFont("Arial", 50).render("Go!!!", True, (255, 255, 255))
@@ -19,6 +20,7 @@ class game_rules:
             self.screen.blit(show, show_rect)
 
     def finish(self):
+        # track that gmae has finished and show Game Over
         if self.started:
             self.finished = True
             show = pygame.font.SysFont("Arial", 50).render("Game Over", True, (255, 255, 255))
@@ -29,6 +31,7 @@ class game_rules:
                 vehicle.freeze()
 
     def display_controls(self):
+        # show arrow png on screen in corner
         controls = my_sprite("images/added/arrows.png", (self.screen.get_width() - 250, self.screen.get_height() - 200))
         controls.scale(0.1)
         self.screen.blit(controls.get_image(), controls.get_loc())
@@ -57,7 +60,9 @@ class game_rules:
             self.screen.blit(msg, msg_rects[m])
 
     def handle_collisions(self, col_obj):
+        # check if any vehicle is collding with an object
         for vehicle in self.vehicles:
             for obj in col_obj:
+                # if vehicle is collding notify the object
                 if vehicle.is_colliding_with(obj):
                     obj.on_collision(vehicle, self)

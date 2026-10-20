@@ -5,7 +5,6 @@ class tree(colliding_object):
         super().__init__(image_fname, loc)
 
     def on_collision(self, vehicle, rules):
+        # tell the vehicle that it crashed
         if not(vehicle.get_crashed()):
             vehicle.crash()
-            vehicle.change_image("images/added/explosion.png")
-            vehicle.freeze()
