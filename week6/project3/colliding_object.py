@@ -30,11 +30,11 @@ class colliding_object(my_sprite):
         self.bounding_box.top = loc[1]
 
     def change_image(self, image_path, scale_factor=1):
-        if getattr(self, "changed", False):
-            return
-        self.changed = True
         loc = self.get_loc()
         self.original_sprite = pygame.image.load(image_path)
         self.sprite = pygame.image.load(image_path)
         self.scale(scale_factor)
         self.set_location(loc)
+
+    def on_collision(self, vehicle, rules):
+        return
