@@ -65,6 +65,43 @@ def prep_images(screen, sprites, col_obj, vehicles, scale_factor):
     for i, img in enumerate(sprites + col_obj + vehicles):
         img.set_location(locs[i])
 
+def display_controls(screen):
+    # show arrow png on screen in corner
+    controls = my_sprite("images/added/arrows.png", (screen.get_width() - 250, screen.get_height() - 200))
+    controls.scale(0.1)
+    screen.blit(controls.get_image(), controls.get_loc())
+
+def display_toggle(screen, switch):
+    # draw a rectangle in upper left corner
+    display = pygame.Rect(screen.get_width() - 205, 0, 200, 100)
+    pygame.draw.rect(screen, (255, 255*switch, 0), display)
+
+    # messages to be displayed in rectangle
+    msgs = [
+        pygame.font.SysFont("Arial", 20).render(f'Controlling:', True, (0, 0, 0)),
+        pygame.font.SysFont("Arial", 25).render(" Yellow" if switch else " Red", True, (0, 0, 0)),
+        pygame.font.SysFont("Arial", 15).render(f'Click SPACE to Switch', True, (0, 0, 0))
+    ]
+
+    # bounding boxes for the messages
+    msg_rects = [
+        msgs[0].get_rect(center = (display.centerx, display.centery - 30)),
+        msgs[1].get_rect(center = display.center),
+        msgs[2].get_rect(center = (display.centerx, display.centery + 40))
+    ]
+
+    # draw each message and its bounding box
+    for m, msg in enumerate(msgs):
+        screen.blit(msg, msg_rects[m])
+
+def handle_collisions(col_obj, vehicles, rules):
+    # check if any vehicle is collding with an object
+    for vehicle in vehicles:
+        for obj in col_obj:
+            # if vehicle is collding notify the object
+            if vehicle.is_colliding_with(obj):
+                obj.on_collision(vehicle, rules)
+
 def main():
     # initialize pygame stuff
     pygame.init()
@@ -130,9 +167,9 @@ def main():
         screen.fill((0, 0, 0))
 
         # draw all the images 
-        rules.display_toggle(control_yellow)
-        rules.display_controls()
-        rules.handle_collisions(col_obj)
+        display_toggle(screen, control_yellow)
+        display_controls(screen)
+        handle_collisions(col_obj, vehicles, rules)
         for img in (road_pieces + col_obj + vehicles):
             screen.blit(img.get_image(), img.get_loc())
 
