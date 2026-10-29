@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class PrimeFunctions {
     public static boolean IsPrime(int n) {
         // compute what to search up to
@@ -24,7 +22,7 @@ public class PrimeFunctions {
             }
         }
 
-        // loop throuhg a second time to fill primes
+        // loop through a second time to fill primes
         int[] primes = new int[count];
         int idx = 0;
         for(int j = 2; j < n; j++) {
@@ -57,16 +55,17 @@ public class PrimeFunctions {
             return new int[]{n};
         }
 
-        int[] factors = new int[count];
+        int[] factors = new int[count]; // create array to strore factors based on loop 1
         
         running = n;
         int idx = 0;
         int f_idx = 0;
 
-        // loop through once to determine array size
+        // loop through second time to insert factors
         while(idx < posFactors.length) {
             int active = posFactors[idx];
             
+            // check if can divide multiple times
             while(running % active == 0) {
                 running /= active;
                 factors[f_idx] = active;
