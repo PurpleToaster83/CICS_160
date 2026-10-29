@@ -2,7 +2,7 @@ package week8;
 
 public class Person {
     private String name;
-    private int age;
+    protected int age; // any person or subtype can access it
     private String birthDate;
 
     Person() {
@@ -21,5 +21,9 @@ public class Person {
         this.name = n;
         this.age = -1;
         this.birthDate = "1/1/1970";  
+    }
+
+    public String toString() {
+        return "Hello I'm " + this.name + ", born on: " + this.birthDate;
     }
 }
