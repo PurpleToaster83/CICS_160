@@ -8,8 +8,8 @@ public class Main {
         ArrayList<MediaFile> files = new ArrayList<MediaFile>();
 
         for(int i = 1; i < n; i++) {
-            files.add(new VideoFile("Video" + i, i * rand.nextDouble(100), rand.nextInt(1000)));
-            files.add(new AudioFile("Audio" + i, i * rand.nextDouble(100), rand.nextDouble(500)));
+            files.add(new VideoFile("Video" + i, i * Math.round(rand.nextDouble(100)), rand.nextInt(1000)));
+            files.add(new AudioFile("Audio" + i, i * Math.round(rand.nextDouble(100)), Math.round(rand.nextDouble(500))));
         }
 
         Main.playAll(files);

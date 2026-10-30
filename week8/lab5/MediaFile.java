@@ -1,6 +1,6 @@
 public abstract class MediaFile {
     protected String title;
-    private double fileSize;
+    protected double fileSize;
 
     MediaFile(String title, double fileSize) {
         this.title = title;

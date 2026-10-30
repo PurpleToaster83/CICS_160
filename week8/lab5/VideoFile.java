@@ -6,11 +6,7 @@ public class VideoFile extends MediaFile {
         super(title, fileSize);
     }
 
-    public int getResolution() {
-        return this.resolution;
-    }
-
     public void play() {
-       System.out.println("Playing " + "'" + title + "'" + " Video File");
+       System.out.println("Playing " + "'" + this.title + "'" + " Video File at quality " + this.resolution);
     }
 }

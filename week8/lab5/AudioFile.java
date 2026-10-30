@@ -6,11 +6,7 @@ public class AudioFile extends MediaFile {
         super(title, fileSize);
     }
 
-    public double getSampleRate() {
-        return this.sampleRate;
-    }
-
     public void play() {
-       System.out.println("Playing " + "'" + title + "'" + " Audio File");
+       System.out.println("Playing " + "'" + title + "'" + " Audio File at sample rate " + this.sampleRate);
     }
 }
