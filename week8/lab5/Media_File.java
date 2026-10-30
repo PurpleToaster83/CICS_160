@@ -1,11 +1,9 @@
-package week8.lab5;
-
 public abstract class Media_File {
     protected String title;
-    protected double file_size;
+    protected double fileSize;
 
-    Media_File(String title, double file_size) {
+    Media_File(String title, double fileSize) {
         this.title = title;
-        this.file_size = file_size;
+        this.fileSize = fileSize;
     }
 }
