@@ -1,7 +1,7 @@
-public class Audio_File extends Media_File {
+public class AudioFile extends MediaFile {
     private double sampleRate;
 
-    public Audio_File(String title, double fileSize, double sampleRate) {
+    public AudioFile(String title, double fileSize, double sampleRate) {
         this.sampleRate = sampleRate;
         super(title, fileSize);
     }

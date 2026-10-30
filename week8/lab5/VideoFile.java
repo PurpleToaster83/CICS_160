@@ -1,7 +1,7 @@
-public class Video_File extends Media_File {
+public class VideoFile extends MediaFile {
     private int resolution;
 
-    public Video_File(String title, double fileSize, int resolution) {
+    public VideoFile(String title, double fileSize, int resolution) {
         this.resolution = resolution;
         super(title, fileSize);
     }
