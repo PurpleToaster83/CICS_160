@@ -9,4 +9,8 @@ public class Audio_File extends Media_File {
     public double getSampleRate() {
         return this.sampleRate;
     }
+
+    public void play() {
+       System.out.println("Playing " + "'" + title + "'" + " Audio File");
+    }
 }
