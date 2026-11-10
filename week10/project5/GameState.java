@@ -7,10 +7,6 @@ public class GameState {
         this.beingsHealth = bHealth;
     }
 
-    public CombatEntity[] getBeings() {
-        return this.beings;
-    }
-
     public CombatEntity getCE(int index) {
         return this.beings[index];
     }

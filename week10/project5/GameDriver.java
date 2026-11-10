@@ -1,5 +1,5 @@
 import java.util.Scanner;
-import java.util.ArrayList;;
+import java.util.ArrayList;
 
 public class GameDriver {
 
@@ -12,22 +12,25 @@ public class GameDriver {
         Wizard wizard = new Wizard("Wizard");
         Dragon dragon = new Dragon("Dragon");
 
+        CombatEntity[] entities = new CombatEntity[] {wizard, dragon};
+
         System.out.println("Start Game!");
         GameState beginState = new GameState(
-            new CombatEntity[] {wizard, dragon},
+            entities,
             new int[] {wizard.getHealth(), dragon.getHealth()}
         );
         stack.push(beginState);
         
-        boolean cont = false;
+        boolean sideDead = false;
         String endCond = "None";
-        do {
+        roundLoop:
+        do { // TODO: keep everything in one array
             ArrayList<Integer> dead = new ArrayList<Integer>();
-            int charNum = stack.peek().getNumBeings();
+            int charNum = currentState.getNumBeings();
 
             // print stats of all char from previous state
             for(int i = 0; i < charNum; i++) {
-                CombatEntity e = stack.peek().getCE(i);
+                CombatEntity e = currentState.getCE(i);
                 System.out.println(e.getName() + " Current Health: " + e.getHealth());
                 System.out.println(e.getName() + " Max Health: " + e.getMaxHealth());
                 System.out.println(e.getName() + " Base Attack: " + e.getBasePower());
@@ -36,73 +39,77 @@ public class GameDriver {
                     dead.add(i);
                 }
             }
-            cont = !dead.isEmpty();
 
             // attack the first dragon and wizard in the array of characters
-            Dragon dToAttack = null;
-            Wizard wToAttack = null;
-            for(CombatEntity e : stack.peek().getBeings()) {
-                if (dToAttack != null && dToAttack != null) {
+            CombatEntity dToAttack = null;
+            CombatEntity wToAttack = null;
+            for(CombatEntity e : entities) {
+                if (dToAttack != null && wToAttack != null) {
                     break;
                 }
-                if(e instanceof Dragon && dToAttack == null) {
-                    dToAttack = (Dragon)e;
+                if(e instanceof AIControlled && dToAttack == null && !e.hasLost()) {
+                    dToAttack = e;
                 }
-                else if(e instanceof Wizard && wToAttack == null) {
-                    wToAttack = (Wizard)e;
+                else if(e instanceof PlayerControlled && wToAttack == null && !e.hasLost()) {
+                    wToAttack = e;
                 }
             }
 
             // player turn
-            for(CombatEntity e : stack.peek().getBeings()) {
-                if(e instanceof Wizard) {
+            for(CombatEntity e : entities) {
+                if(e instanceof PlayerControlled) {
                     Wizard w = (Wizard)e;
                     String action = w.chooseAction(scanner, dToAttack);
                     System.out.println(action);
                     if(action.equals("UNDO")) {
                         stack.pop();
+                        GameState undone = stack.peek();
+                        for(int k = 0; k < undone.getNumBeings(); k++) {
+                            undone.getCE(k).setHealth(undone.getCEHealth(k));
+                        }
                         System.out.println(w.getName() + " casts a spell to turn back time");
+                        continue roundLoop;
                     }
                     else if(action.equals("RETREAT")) {
-                        cont = false;
                         System.out.println(w.getName() + " runs away and lives to fight another day");
                         endCond = "A Wizard Retreated";
+                        break roundLoop;
                     }
                 }
-            }
-            if(cont == false) {
-                break;
             }
 
             // enemy turn
-            for(CombatEntity e : stack.peek().getBeings()) {
-                if(e instanceof Dragon) {
-                    Dragon d = (Dragon)e;
-                    System.out.println(d.attack(wToAttack));
+            for(CombatEntity e : entities) {
+                if(e instanceof AIControlled && !e.hasLost()) {
+                    System.out.println(e.attack(wToAttack));
                 }
             }
 
-            // determine who is dead/alive and make new state
-            CombatEntity[] aliveChar = new CombatEntity[charNum - dead.size()];
-            int[] aliveHealth = new int[charNum - dead.size()];
-            int skip = 0;
-            for(int i = 0; i < charNum; i++) {
-                if(dead.indexOf(i) == -1) {
-                    aliveChar[i - skip] = stack.peek().getCE(i);
-                    aliveHealth[i - skip] = stack.peek().getCE(i).getHealth();
+            boolean d = false;
+            boolean w = false;
+            for(CombatEntity e : entities) {
+                if(e instanceof PlayerControlled && !e.hasLost()) {
+                    w = true;
                 }
-                else {
-                    skip++;
+                else if(e instanceof AIControlled && !e.hasLost()) {
+                    d = true;
                 }
             }
-            stack.push(new GameState(aliveChar, aliveHealth));
+
+            int[] newHealths = new int[entities.length];
+            for(int h = 0; h < entities.length; h++) {
+                newHealths[h] = currentState.getCE(h).getHealth();
+            }
+            sideDead = !(d && w);
+            currentState = new GameState(entities, newHealths);
+            stack.push(currentState);
 
         }
-        while (cont);
+        while (!sideDead);
 
         boolean dLeft = false;
-        for(CombatEntity remaining : stack.peek().getBeings()) {
-            if(remaining instanceof Dragon) {
+        for(CombatEntity remaining : entities) {
+            if(remaining instanceof AIControlled) {
                 dLeft = true;
             }
         }
