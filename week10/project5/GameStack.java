@@ -12,6 +12,7 @@ public class GameStack {
     }
 
     public GameState pop() {
+        if(history.isEmpty()) return null;
         return this.history.remove(history.size() - 1);
     }
 

@@ -11,9 +11,14 @@ public class Wizard extends CombatEntity implements PlayerControlled {
 
     public String chooseAction(Scanner input, CombatEntity target) {
         int choice = -1;
-        while (choice != 0 || choice != 1 || choice != 2 || choice != 3) {
+        while (choice < 0 || choice > 3) {
             System.out.println("0. Retreat\t1. Simple Attack\t 2. Heal (Spell)\t 3. Undo (Spell)");
-            choice = input.nextInt();
+            if(input.hasNextInt()) {
+                choice = input.nextInt();
+            }
+            else {
+                input.next();
+            }
         }
 
         if(choice == 0) {

@@ -2,6 +2,9 @@ import java.util.Scanner;
 import java.util.ArrayList;;
 
 public class GameDriver {
+
+    private static GameState currentState;
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -112,5 +115,9 @@ public class GameDriver {
             endCond = "The Wizards Won!";
         }
         System.out.println(endCond);
+    }
+
+    public static GameState getCurrentGameState() {
+        return currentState;
     }
 }

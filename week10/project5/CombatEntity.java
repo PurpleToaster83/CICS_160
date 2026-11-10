@@ -22,9 +22,10 @@ public abstract class CombatEntity {
     }
 
     public String recover(int amount, String source) {
-        if(this.curHealth + amount >= 100) {
-            amount = 100 - this.curHealth;
+        if(this.curHealth + amount >= maxHealth) {
+            amount = maxHealth - this.curHealth;
         }
+        this.curHealth += amount;
         return this.name + " recovers " + amount + " health from  " + source;
     }
 
