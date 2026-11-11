@@ -26,7 +26,7 @@ public abstract class CombatEntity {
             amount = maxHealth - this.curHealth;
         }
         this.curHealth += amount;
-        return this.name + " recovers " + amount + " health from  " + source;
+        return this.name + " recovers " + amount + " health from " + source;
     }
 
     public String getName() {

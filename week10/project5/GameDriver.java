@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import java.util.ArrayList;
 
 public class GameDriver {
 
@@ -15,17 +14,17 @@ public class GameDriver {
         CombatEntity[] entities = new CombatEntity[] {wizard, dragon};
 
         System.out.println("Start Game!");
-        GameState beginState = new GameState(
+        currentState = new GameState(
             entities,
             new int[] {wizard.getHealth(), dragon.getHealth()}
         );
-        stack.push(beginState);
+        stack.push(currentState);
         
         boolean sideDead = false;
+        boolean retreat = false;
         String endCond = "None";
         roundLoop:
-        do { // TODO: keep everything in one array
-            ArrayList<Integer> dead = new ArrayList<Integer>();
+        do {
             int charNum = currentState.getNumBeings();
 
             // print stats of all char from previous state
@@ -34,54 +33,58 @@ public class GameDriver {
                 System.out.println(e.getName() + " Current Health: " + e.getHealth());
                 System.out.println(e.getName() + " Max Health: " + e.getMaxHealth());
                 System.out.println(e.getName() + " Base Attack: " + e.getBasePower());
-
-                if(e.hasLost()) {
-                    dead.add(i);
-                }
             }
 
-            // attack the first dragon and wizard in the array of characters
             CombatEntity dToAttack = null;
             CombatEntity wToAttack = null;
-            for(CombatEntity e : entities) {
-                if (dToAttack != null && wToAttack != null) {
-                    break;
-                }
-                if(e instanceof AIControlled && dToAttack == null && !e.hasLost()) {
-                    dToAttack = e;
-                }
-                else if(e instanceof PlayerControlled && wToAttack == null && !e.hasLost()) {
-                    wToAttack = e;
-                }
-            }
 
             // player turn
             for(CombatEntity e : entities) {
-                if(e instanceof PlayerControlled) {
-                    Wizard w = (Wizard)e;
+                dToAttack = null;
+                // attack the first dragon and wizard in the array of characters
+                for(CombatEntity p : entities) {
+                    if(p instanceof AIControlled && dToAttack == null && !p.hasLost()) {
+                        dToAttack = p;
+                    }
+                }
+
+                if(e instanceof PlayerControlled && !e.hasLost() && dToAttack != null) {
+                    PlayerControlled w = (PlayerControlled)e;
                     String action = w.chooseAction(scanner, dToAttack);
-                    System.out.println(action);
                     if(action.equals("UNDO")) {
-                        stack.pop();
+                        GameState popped = stack.pop();
+                        if(stack.isEmpty()) {
+                            stack.push(popped);
+                        }
                         GameState undone = stack.peek();
                         for(int k = 0; k < undone.getNumBeings(); k++) {
                             undone.getCE(k).setHealth(undone.getCEHealth(k));
                         }
-                        System.out.println(w.getName() + " casts a spell to turn back time");
+                        currentState = stack.peek();
+                        System.out.println(e.getName() + " casts a spell to turn back time");
                         continue roundLoop;
                     }
                     else if(action.equals("RETREAT")) {
-                        System.out.println(w.getName() + " runs away and lives to fight another day");
-                        endCond = "A Wizard Retreated";
+                        System.out.println(e.getName() + " runs away, and lives to fight another day");
+                        retreat = true;
                         break roundLoop;
                     }
+                    System.out.println(action);
                 }
             }
 
+                for(CombatEntity p : entities) {
+                    if(p instanceof PlayerControlled && wToAttack == null && !p.hasLost()) {
+                        wToAttack = p;
+                    }
+                }
+
             // enemy turn
             for(CombatEntity e : entities) {
+                wToAttack = null;
                 if(e instanceof AIControlled && !e.hasLost()) {
-                    System.out.println(e.attack(wToAttack));
+                    AIControlled d = (AIControlled) e;
+                    System.out.println(d.takeTurn(wToAttack));
                 }
             }
 
@@ -107,19 +110,20 @@ public class GameDriver {
         }
         while (!sideDead);
 
-        boolean dLeft = false;
+        boolean wLeft = false;
         for(CombatEntity remaining : entities) {
-            if(remaining instanceof AIControlled) {
-                dLeft = true;
+            if(remaining instanceof PlayerControlled && !remaining.hasLost()) {
+                wLeft = true;
             }
         }
-        if(dLeft) {
-            if(!endCond.equals("None")) {
-                endCond = "The Dragons Defeated the Wizards";
-            }
+        if(retreat) {
+            endCond = "A Wizard Escaped";
+        }
+        else if(wLeft) {
+            endCond = "Wizard Victory";
         }
         else {
-            endCond = "The Wizards Won!";
+            endCond = "The Dragons Defeated the Wizards";
         }
         System.out.println(endCond);
     }
