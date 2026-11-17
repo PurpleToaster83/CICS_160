@@ -11,17 +11,22 @@ public class GameDriver {
         Wizard wizard = new Wizard("Wizard");
         Dragon dragon = new Dragon("Dragon");
 
-        CombatEntity[] entities = new CombatEntity[] {wizard, dragon};
+        CombatEntity[] entities = new CombatEntity[]{
+            wizard,
+            dragon,
+        };
+
+        int[] startHealth = new int[entities.length];
+        for(int h = 0; h < entities.length; h++) {
+            startHealth[h] = entities[h].getHealth();
+        }
 
         System.out.println("Start Game!");
-        currentState = new GameState(
-            entities,
-            new int[] {wizard.getHealth(), dragon.getHealth()}
-        );
+        currentState = new GameState(entities, startHealth);
         stack.push(currentState);
         
         boolean sideDead = false;
-        boolean retreat = false;
+        String retreat = null;
         String endCond = "None";
         roundLoop:
         do {
@@ -66,7 +71,7 @@ public class GameDriver {
                     }
                     else if(action.equals("RETREAT")) {
                         System.out.println(e.getName() + " runs away, and lives to fight another day");
-                        retreat = true;
+                        retreat = e.getName();
                         break roundLoop;
                     }
                     System.out.println(action);
@@ -85,7 +90,9 @@ public class GameDriver {
 
                 if(e instanceof AIControlled && !e.hasLost()) {
                     AIControlled d = (AIControlled) e;
-                    System.out.println(d.takeTurn(wToAttack));
+                    if(wToAttack != null) {
+                        System.out.println(d.takeTurn(wToAttack));
+                    }
                 }
             }
 
@@ -102,7 +109,7 @@ public class GameDriver {
 
             int[] newHealths = new int[entities.length];
             for(int h = 0; h < entities.length; h++) {
-                newHealths[h] = currentState.getCE(h).getHealth();
+                newHealths[h] = entities[h].getHealth();
             }
             sideDead = !(d && w);
             currentState = new GameState(entities, newHealths);
@@ -117,14 +124,14 @@ public class GameDriver {
                 wLeft = true;
             }
         }
-        if(retreat) {
-            endCond = "A Wizard Escaped";
+        if(retreat != null) {
+            endCond = retreat + " Escaped";
         }
         else if(wLeft) {
             endCond = "Wizard Victory";
         }
         else {
-            endCond = "The Dragons Defeated the Wizards";
+            endCond = "The Wizards have been Defeated";
         }
         System.out.println(endCond);
     }

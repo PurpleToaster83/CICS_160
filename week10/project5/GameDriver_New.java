@@ -1,32 +1,30 @@
 import java.util.Scanner;
-import java.util.ArrayList;
 
 public class GameDriver_New {
 
-    private static GameState_New currentState;
+    private static GameState currentState;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        GameStack_New stack = new GameStack_New();
+        GameStack stack = new GameStack();
         Wizard wizard = new Wizard("Wizard");
         Dragon dragon = new Dragon("Dragon");
         Goblin goblin = new Goblin("Goblin", 0.5);
 
+        CombatEntity[] entities = new CombatEntity[]{
+            wizard,
+            dragon,
+            goblin
+        };
 
-        // CombatEntity[] entities = new CombatEntity[] {wizard, dragon};
-        ArrayList<CombatEntity> entities = new ArrayList<CombatEntity>();
-        entities.add(wizard);
-        entities.add(dragon);
-        entities.add(goblin);
-
-        int[] startHealth = new int[entities.size()];
-        for(int h = 0; h < entities.size(); h++) {
-            startHealth[h] = entities.get(h).getHealth();
+        int[] startHealth = new int[entities.length];
+        for(int h = 0; h < entities.length; h++) {
+            startHealth[h] = entities[h].getHealth();
         }
 
         System.out.println("Start Game!");
-        currentState = new GameState_New(entities, startHealth);
+        currentState = new GameState(entities, startHealth);
         stack.push(currentState);
         
         boolean sideDead = false;
@@ -61,11 +59,11 @@ public class GameDriver_New {
                     PlayerControlled w = (PlayerControlled)e;
                     String action = w.chooseAction(scanner, dToAttack);
                     if(action.equals("UNDO")) {
-                        GameState_New popped = stack.pop();
+                        GameState popped = stack.pop();
                         if(stack.isEmpty()) {
                             stack.push(popped);
                         }
-                        GameState_New undone = stack.peek();
+                        GameState undone = stack.peek();
                         for(int k = 0; k < undone.getNumBeings(); k++) {
                             undone.getCE(k).setHealth(undone.getCEHealth(k));
                         }
@@ -111,12 +109,12 @@ public class GameDriver_New {
                 }
             }
 
-            int[] newHealths = new int[entities.size()];
-            for(int h = 0; h < entities.size(); h++) {
-                newHealths[h] = entities.get(h).getHealth();
+            int[] newHealths = new int[entities.length];
+            for(int h = 0; h < entities.length; h++) {
+                newHealths[h] = entities[h].getHealth();
             }
             sideDead = !(d && w);
-            currentState = new GameState_New(entities, newHealths);
+            currentState = new GameState(entities, newHealths);
             stack.push(currentState);
 
         }
@@ -140,7 +138,7 @@ public class GameDriver_New {
         System.out.println(endCond);
     }
 
-    public static GameState_New getCurrentGameState() {
+    public static GameState getCurrentGameState() {
         return currentState;
     }
 }
