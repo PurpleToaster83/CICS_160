@@ -73,15 +73,16 @@ public class GameDriver {
                 }
             }
 
+            // enemy turn
+            for(CombatEntity e : entities) {
+                wToAttack = null;
+
                 for(CombatEntity p : entities) {
                     if(p instanceof PlayerControlled && wToAttack == null && !p.hasLost()) {
                         wToAttack = p;
                     }
                 }
 
-            // enemy turn
-            for(CombatEntity e : entities) {
-                wToAttack = null;
                 if(e instanceof AIControlled && !e.hasLost()) {
                     AIControlled d = (AIControlled) e;
                     System.out.println(d.takeTurn(wToAttack));
